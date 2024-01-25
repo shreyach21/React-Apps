@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Axios } from "axios";
+import  Axios  from "axios";
 
 import { Container, Input, InputGroup, Row, Col, Button } from "reactstrap";
 
@@ -17,8 +17,10 @@ const Home = () => {
         try {
             const { data } = await Axios.get(`https://api.github.com/users/${query}`)
             setUser(data)
+            console.log(query);
             console.log(data);
         } catch (error) {
+            console.log(error);
             toast("Not able to locate the user", {
                 type: "error"
             })
