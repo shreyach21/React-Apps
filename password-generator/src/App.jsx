@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
+import 'tailwindcss/tailwind.css';
 
 function App() {
   const [password, setPassword] = useState("");
@@ -14,24 +15,24 @@ function App() {
     if (characterAllowed) {
       characters += "!@#$%^&*~";
     }
-    while (pwString.length != length) {
-      pwString += characters.charAt(Math.floor(Math.random() * charset.length));
+    while (pwString.length !== length) {
+      pwString += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     setPassword(pwString);
   }, [length, numberAllowed, characterAllowed, setPassword]);
-  
-  const passWordRef=useRef(null)
 
-  const copyPasswordToClipboard=useCallback(()=>{
-    passWordRef.current?.select()
+  const passwordRef = useRef(null);
+
+  const copyPasswordToClipboard = useCallback(() => {
+    passwordRef.current?.select();
     // passWordRef.current?.setSelectionRange(0,8)
-    window.navigator.clipboard.writeText(password)
-  },[password])
+    window.navigator.clipboard.writeText(password);
+  }, [password]);
 
-  useEffect(()=>{
-    generatePassword()
-  },[length,numberAllowed,characterAllowed,generatePassword])
-  
+  useEffect(() => {
+    generatePassword();
+  }, [length, numberAllowed, characterAllowed, generatePassword]);
+
   return (
     <div className="w-full max-w-md px-4 py-3 my-8 mx-auto shadow-md rounded-lg bg-gray-700 text-orange-500">
       <h1 className="text-center text-white my-4">Password Generator</h1>
@@ -41,12 +42,13 @@ function App() {
           value={password}
           placeholder="password"
           className="w-full outline-none px-4 py-1"
-          ref={passWordRef}
+          ref={passwordRef}
           readOnly
         />
         <button
-        onClick={copyPasswordToClipboard}
-         className="text-white bg-blue-700 px-3 py-1 outline-none shrink-0">
+          onClick={copyPasswordToClipboard}
+          className="text-white bg-blue-700 px-3 py-1 outline-none shrink-0"
+        >
           Copy
         </button>
       </div>
@@ -58,7 +60,7 @@ function App() {
             max={15}
             value={length}
             className="cursor-pointer"
-            onChange={(e) => setLength(e.target.value)}
+            onChange={(e) => setLength(parseInt(e.target.value))}
           />
           <label>Length: {length}</label>
         </div>
@@ -67,7 +69,7 @@ function App() {
             type="checkbox"
             defaultChecked={numberAllowed}
             id="numberInput"
-            onChange={setNumberAllowed((prev) => !prev)}
+            onChange={() => setNumberAllowed((prev) => !prev)}
           />
           <label htmlFor="numberInput">Numbers</label>
         </div>
@@ -76,13 +78,14 @@ function App() {
             type="checkbox"
             defaultChecked={characterAllowed}
             id="characterInput"
-            onChange={setCharacterAllowed((prev) => !prev)}
+            onChange={() => setCharacterAllowed((prev) => !prev)}
           />
           <label htmlFor="characterInput">Characters</label>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default App;
+
