@@ -1,94 +1,96 @@
-import React, { useCallback, useState, useEffect, useRef } from "react";
-import 'tailwindcss/tailwind.css';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
-function App() {
+const Try = () => {
   const [password, setPassword] = useState("");
   const [length, setLength] = useState(0);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [characterAllowed, setCharacterAllowed] = useState(false);
-  const generatePassword = useCallback(() => {
-    let pwString = "";
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    if (numberAllowed) {
-      characters += "0123456789";
-    }
-    if (characterAllowed) {
-      characters += "!@#$%^&*~";
-    }
-    while (pwString.length !== length) {
-      pwString += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    setPassword(pwString);
-  }, [length, numberAllowed, characterAllowed, setPassword]);
 
-  const passwordRef = useRef(null);
+  const passwordRef=useRef(null)
 
-  const copyPasswordToClipboard = useCallback(() => {
-    passwordRef.current?.select();
-    window.navigator.clipboard.writeText(password);
-    // if (passwordRef.current) {
-    //   passwordRef.current.focus();
-    //   passwordRef.current.setSelectionRange(0, 3); // Select first 3 characters
-    // }
-  }, [password]);
+  const generatePassword=useCallback(()=>{
+    let characters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    let pwString=""
+    if(numberAllowed){
+        characters+="0123456789"
+    }
+    if(characterAllowed){
+        characters+="!@#$%^&*~"
+    }
+    while(pwString.length!==length){
+        pwString+=characters.charAt(
+            Math.floor(Math.random()*characters.length)
+        )
+    }
+    setPassword(pwString)
+  },[length,numberAllowed,characterAllowed,setPassword])
 
-  useEffect(() => {
-    generatePassword();
-  }, [length, numberAllowed, characterAllowed, generatePassword]);
+  useEffect(()=>{
+    generatePassword()
+  },[length,numberAllowed,characterAllowed,generatePassword])
+
+  const copyTextToClipboard=()=>{
+    passwordRef.current?.select()
+    window.navigator.clipboard.writeText(password)
+    if(passwordRef.current){
+        passwordRef.current.focus()
+        passwordRef.current.setSelectionRange(0,3)
+    }
+  }
 
   return (
-    <div className="w-full max-w-md px-4 py-3 my-8 mx-auto shadow-md rounded-lg bg-gray-700 text-orange-500">
-      <h1 className="text-center text-white my-4 text-3xl">Password Generator</h1>
-      <div className="flex shadow rounded-lg overflow-hidden mb-4">
+    <div className="max-w-lg w-full bg-gray-700 text-orange-500 rounded-lg shadow-md my-8 p-4 mx-auto shadow-slate-500">
+      <h1 className="text-white text-center text-2xl my-4">
+        Password Generator
+      </h1>
+      <div className="flex rounded-lg overflow-hidden mb-4 shadow-xl">
         <input
           type="text"
-          value={password}
           placeholder="password"
-          className="w-full outline-none px-4 py-1 text-xl"
+          value={password}
           ref={passwordRef}
+          className="px-4 py-1 text-xl outline-none w-full "
           readOnly
         />
-        <button
-          onClick={copyPasswordToClipboard}
-          className="text-white bg-blue-700 px-3 py-1 outline-none shrink-0"
-        >
+        <button 
+        onClick={copyTextToClipboard}
+        className="px-4 py-1 bg-blue-700 text-white text-xl shrink-0">
           Copy
         </button>
       </div>
-      <div className="flex text-md gap-x-2">
+      <div className="flex text-xl gap-x-3">
         <div className="flex items-center gap-x-1">
           <input
             type="range"
             min={8}
-            max={25}
-            value={length}
+            max={30}
             className="cursor-pointer"
+            value={length}
             onChange={(e) => setLength(parseInt(e.target.value))}
           />
           <label>Length: {length}</label>
         </div>
-        <div className="flex items-center gap-x-1 text-md">
+        <div className="flex items-center gap-x-1">
           <input
             type="checkbox"
             defaultChecked={numberAllowed}
-            id="numberInput"
-            onChange={() => setNumberAllowed((prev) => !prev)}
+            id="num"
+            onChange={()=>setNumberAllowed((prev) => !prev)}
           />
-          <label htmlFor="numberInput">Numbers</label>
+          <label htmlFor="num">Numbers</label>
         </div>
-        <div className="flex items-center gap-x-1 text-md">
+        <div className="flex items-center gap-x-1">
           <input
             type="checkbox"
             defaultChecked={characterAllowed}
-            id="characterInput"
-            onChange={() => setCharacterAllowed((prev) => !prev)}
+            id="char"
+            onChange={()=>setCharacterAllowed((prev) => !prev)}
           />
-          <label htmlFor="characterInput">Characters</label>
+          <label htmlFor="char">Characters</label>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default App;
-
+export default Try;
