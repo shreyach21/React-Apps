@@ -3,7 +3,7 @@ import 'tailwindcss/tailwind.css';
 
 function App() {
   const [password, setPassword] = useState("");
-  const [length, setLength] = useState(10);
+  const [length, setLength] = useState(0);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [characterAllowed, setCharacterAllowed] = useState(false);
   const generatePassword = useCallback(() => {
@@ -25,8 +25,11 @@ function App() {
 
   const copyPasswordToClipboard = useCallback(() => {
     passwordRef.current?.select();
-    // passWordRef.current?.setSelectionRange(0,8)
     window.navigator.clipboard.writeText(password);
+    // if (passwordRef.current) {
+    //   passwordRef.current.focus();
+    //   passwordRef.current.setSelectionRange(0, 3); // Select first 3 characters
+    // }
   }, [password]);
 
   useEffect(() => {
@@ -35,13 +38,13 @@ function App() {
 
   return (
     <div className="w-full max-w-md px-4 py-3 my-8 mx-auto shadow-md rounded-lg bg-gray-700 text-orange-500">
-      <h1 className="text-center text-white my-4">Password Generator</h1>
+      <h1 className="text-center text-white my-4 text-3xl">Password Generator</h1>
       <div className="flex shadow rounded-lg overflow-hidden mb-4">
         <input
           type="text"
           value={password}
           placeholder="password"
-          className="w-full outline-none px-4 py-1"
+          className="w-full outline-none px-4 py-1 text-xl"
           ref={passwordRef}
           readOnly
         />
@@ -57,14 +60,14 @@ function App() {
           <input
             type="range"
             min={8}
-            max={15}
+            max={25}
             value={length}
             className="cursor-pointer"
             onChange={(e) => setLength(parseInt(e.target.value))}
           />
           <label>Length: {length}</label>
         </div>
-        <div className="flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1 text-md">
           <input
             type="checkbox"
             defaultChecked={numberAllowed}
@@ -73,7 +76,7 @@ function App() {
           />
           <label htmlFor="numberInput">Numbers</label>
         </div>
-        <div className="flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1 text-md">
           <input
             type="checkbox"
             defaultChecked={characterAllowed}
